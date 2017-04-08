@@ -1,11 +1,15 @@
 package com.demo.controller;
 
 import com.demo.domain.People;
+import com.demo.domain.Result;
 import com.demo.repository.PeopleRepository;
 import com.demo.service.PeopleService;
+import com.demo.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,18 +37,21 @@ public class PeopleController {
 
     /**
      * 向people表中添加一个人
-     * @param name
-     * @param age
-     * @return
+     * 第一版：People属性单个分别接收
+     * 第二版：直接接收people这个类对象，方便对类字段进行校验
+     * 对people中的数据进行校验，校验结果绑定在bindingResult上
+     *
+     * 1.异常返回或正常返回都做统一的处理
+     * 2.代码写重复了，要做工具类（ResultUtil）进行抽取
+     *
      */
     @PostMapping(value = "/peoples")
-    public People peopleAdd(@RequestParam("name") String name,
-                            @RequestParam("age") Integer age){
-        People people = new People();
-        people.setName(name);
-        people.setAge(age);
-        //save方法返回添加的对象
-        return peopleRepository.save(people);
+    public Result<People> peopleAdd(@Valid People people, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return ResultUtil.error(1, bindingResult.getFieldError().getDefaultMessage());
+        }
+
+        return ResultUtil.success(peopleRepository.save(people));
     }
 
     /**
@@ -100,5 +107,11 @@ public class PeopleController {
     @PostMapping(value = "/peoples/two")
     public void peopleTwo(){
         peopleService.insertTwo();
+    }
+
+    //统一异常处理
+    @GetMapping(value = "/peoples/getAge/{id}")
+    public void getPeopleType(@PathVariable Integer id) throws Exception {
+        peopleService.getType(id);
     }
 }

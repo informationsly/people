@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  *
  *
  * @Controller 处理http请求
- * 单独使用Controller需要结合模版使用，模版放在templates文件夹下，返回模版名称，但现在讲究前后端分离，
+ * 单独使用Controller需要添加模版引擎，结合模版使用，模版放在templates文件夹下，返回模版名称，但现在讲究前后端分离，
  * 模版技术了解就可以，不推荐使用
  *
  *

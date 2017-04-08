@@ -1,8 +1,12 @@
 package com.demo.domain;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -21,8 +25,18 @@ public class People {
     @GeneratedValue
     private Integer id;
 
+    /**
+     *
+     * @NotEmpty 用在集合类上面
+     * @NotBlank 用在String上面
+     * @NotNull    用在基本类型上
+     *
+     */
+    @NotBlank(message = "姓名必填")
     private String name;
 
+    //对年龄进行表单校验
+    @Min(value = 18, message = "年龄都必须在18岁以上")
     private Integer age;
 
     private Integer height;
@@ -61,5 +75,15 @@ public class People {
 
     public void setHeight(Integer height) {
         this.height = height;
+    }
+
+    @Override
+    public String toString() {
+        return "People{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", height=" + height +
+                '}';
     }
 }
