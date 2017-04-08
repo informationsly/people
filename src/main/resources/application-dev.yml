@@ -1,0 +1,10 @@
+server:
+  port: 8080
+  context-path: /people
+
+firstPeople: Adam
+content: "firstpeople is ${firstPeople} , age unknown"
+
+people:
+  skinColor: white
+  averageHeight: 170
